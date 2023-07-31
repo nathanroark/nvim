@@ -180,11 +180,15 @@ require('lazy').setup({
     },
     build = ':TSUpdate',
   },
+  -- {
+  --   "pmizio/typescript-tools.nvim",
+  --   dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+  --   opts = {},
+  -- },
   require 'kickstart.plugins.autoformat',
   require 'custom.plugins.copilot',
   require 'custom.plugins.harpoon',
   require 'custom.plugins.transparent',
-  require 'custom.plugins.vim-svelte-plugin',
 }, {})
 
 -- [[ Setting options ]]
@@ -232,6 +236,9 @@ vim.o.termguicolors = true
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
+--
+vim.lsp.buf.hover() -- show hover doc
+
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 vim.g.mapleader = " "
@@ -398,8 +405,9 @@ local on_attach = function(_, bufnr)
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
   -- See `:help K` for why this keymap
-  nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+  nmap('K', vim.lsp.buf.hover, 'Hover Documentation') -- See TypeScript Type Definition
   nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+  vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = 'Signature Documentation' })
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
